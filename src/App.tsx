@@ -14,8 +14,7 @@ function App() {
 	const [loading, setLoading] = useState(false)
 	const [countries, setCountries] = useState<countries>([])
 	const [search, setSearch] = useState("")
-	const [continent, setContinent] = useState<string[]>([])
-	const [filter, setFilter] = useState<regions>()
+	const [filter, setFilter] = useState<regions>("none")
 	const [sort, setSort] = useState<sortType>()
 	const asyncCountries = async () => {
 		setCountries(await getCountries())
@@ -55,16 +54,21 @@ function App() {
 				{regions.map((region) => {
 					console.log("object")
 					return (
-						<button
-							key={region}
-							onClick={() => setFilter(region)}
-							className={classNames(
-								filter === region ? "bg-blue-10" : "",
-								"block w-full px-4 py-2 text-sm"
+						<Menu.Item>
+							{({ active }) => (
+								<button
+									type="button"
+									className={classNames(
+										active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+										"block w-full px-4 py-2 text-sm",
+										filter === region ? "bg-blue-10" : ""
+									)}
+									onClick={() => setFilter(region)}
+								>
+									{region}
+								</button>
 							)}
-						>
-							{region}
-						</button>
+						</Menu.Item>
 					)
 				})}
 			</>
@@ -110,7 +114,8 @@ function App() {
 								type="button"
 								className={classNames(
 									active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-									"block w-full px-4 py-2 text-sm"
+									"block w-full px-4 py-2 text-sm",
+									filter === "Lithuania" ? "bg-blue-10" : ""
 								)}
 								onClick={() => setFilter("Lithuania")}
 							>
@@ -118,21 +123,7 @@ function App() {
 							</button>
 						)}
 					</Menu.Item>
-					<Menu.Item>
-						{({ active }) => {
-							return (
-								<div
-									className={classNames(
-										active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-										"block w-full px-4 py-2 text-sm"
-									)}
-								>
-									<span>By Continent</span>
-									<FilterDropdown />
-								</div>
-							)
-						}}
-					</Menu.Item>
+					<FilterDropdown />
 				</Dropdown>
 				<div className="search ml-auto mr-5 h-full">
 					<input
