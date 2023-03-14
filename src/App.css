@@ -2,9 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 h1 {
-	@apply text-3xl text-blue-30;
+	@apply text-lg text-white;
 }
 
 body {
-	@apply bg-black/75;
+	/* @apply bg-black/75; */
+}
+.button {
+	@apply rounded-lg bg-blue-10 px-3 py-2 text-black;
 }
