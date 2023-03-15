@@ -1,23 +1,30 @@
-import { useEffect, useMemo, useState, useCallback, memo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import Card from "./components/Card"
 import { Dropdown } from "./components/Droprown"
 import NavBar from "./components/NavBar"
 import {
 	classNames,
+	filterCountries,
 	getCountries,
+	sortArea,
 	sortAsc,
-	sortContinentAsc,
-	sortContinentDesc,
-	sortDesc,
+	sortContinent,
+	wordsearch,
 } from "./helpers"
-import type { countries, sortType } from "./types"
-import { regions, sorts } from "./types"
+import { countries, countriesPerPage, sortType } from "./types"
+import { regions } from "./types"
 import { Menu } from "@headlessui/react"
+import Pagination from "./components/Pagination"
+import SortDropdown from "./components/SortDropdown"
+import FilterDropdown from "./components/FilterDropdown"
 function App() {
 	useEffect(() => {
 		setLoading(true)
 		asyncCountries()
 	}, [])
+	const [page, setPage] = useState(1)
+	const firstPageIndex = page * countriesPerPage
+	const firstCountry = firstPageIndex - countriesPerPage
 	const [loading, setLoading] = useState(false)
 	const [countries, setCountries] = useState<countries>([])
 	const [search, setSearch] = useState("")
@@ -28,75 +35,19 @@ function App() {
 		setLoading(false)
 	}
 
-	const SortDroprown = () => {
-		return (
-			<>
-				{sorts.map((method, i) => {
-					console.log("object")
-					return (
-						<Menu.Item key={method}>
-							{({ active }) => (
-								<button
-									type="button"
-									onClick={() => setSort(method)}
-									className={classNames(
-										active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-										(i === 0 && sort === undefined) || sort === method
-											? "bg-blue-10"
-											: "",
-										"block w-full px-4 py-2 text-left text-sm"
-									)}
-								>
-									{method}
-								</button>
-							)}
-						</Menu.Item>
-					)
-				})}
-			</>
-		)
-	}
-	const FilterDropdown = () => {
-		return (
-			<>
-				{regions.map((region) => {
-					console.log("object")
-					return (
-						<Menu.Item>
-							{({ active }) => (
-								<button
-									type="button"
-									className={classNames(
-										active ? "bg-gray-100 text-gray-900" : "text-gray-700",
-										"block w-full px-4 py-2 text-sm",
-										filter === region ? "bg-blue-10" : ""
-									)}
-									onClick={() => setFilter(region)}
-								>
-									{region}
-								</button>
-							)}
-						</Menu.Item>
-					)
-				})}
-			</>
-		)
-	}
 	const shownCountries = useMemo(() => {
-		if (search !== "")
-			return countries.filter((a) => {
-				const words = a.name.toLowerCase().split(" ")
-				return words.some((word) => word.startsWith(search.toLowerCase()))
-			}) //word search
-		if (sort === "Country (Asc.)") return sortAsc(countries)
-		if (sort === "Country (Desc.)") return sortDesc(countries) // temporary
-		if (sort === "Area (Asc.)") return countries // temporary
-		if (sort === "Area (Desc.)") return countries // temporary
-		if (sort === "Continent (Asc.)") return sortContinentAsc(countries) // temporary
-		if (sort === "Continent (Desc.)") return sortContinentDesc(countries) // temporary
-		else return countries
-	}, [countries, sort, search])
-
+		console.log("show ran")
+		if (search !== "") return wordsearch(countries, search)
+		if (filter !== "none") return filterCountries(countries, filter)
+		if (sort?.includes("Country"))
+			return sortAsc(countries, sort.includes("Asc") ? "asc" : "desc")
+		if (sort?.includes("Area"))
+			return sortArea(countries, sort.includes("Asc") ? "asc" : "desc")
+		if (sort?.includes("Continent"))
+			return sortContinent(countries, sort.includes("Asc") ? "asc" : "desc")
+		return countries
+	}, [countries, sort, search, filter])
+	const currentPage = shownCountries.slice(firstCountry, firstPageIndex)
 	return (
 		<div className="App min-h-screen scroll-smooth">
 			<NavBar />
@@ -115,10 +66,10 @@ function App() {
 				</div>
 			)}
 			<div className="flex w-full flex-row flex-wrap items-center justify-center gap-3 p-2">
-				<Dropdown buttonName="Sort By">
-					<SortDroprown />
+				<Dropdown buttonName="Sort By" disabled={filter !== "none"}>
+					<SortDropdown sort={sort} setSort={setSort} />
 				</Dropdown>
-				<Dropdown buttonName="Fitler">
+				<Dropdown buttonName="Filter">
 					<Menu.Item>
 						{({ active }) => (
 							<button
@@ -134,7 +85,7 @@ function App() {
 							</button>
 						)}
 					</Menu.Item>
-					<FilterDropdown />
+					<FilterDropdown filter={filter} setFilter={setFilter} />
 				</Dropdown>
 				<div className="search ml-auto mr-5 h-full">
 					<input
@@ -148,11 +99,15 @@ function App() {
 					/>
 				</div>
 			</div>
-
 			<div className="flex flex-col gap-4 p-2">
-				{shownCountries.map((d, i) => {
+				{currentPage.map((d, i) => {
 					return <Card key={i} data={d} />
 				})}
+				<Pagination
+					setPage={setPage}
+					totalCountries={shownCountries.length}
+					page={page}
+				/>
 			</div>
 		</div>
 	)

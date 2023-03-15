@@ -1,4 +1,12 @@
-const SortDroprown = () => {
+import { Menu } from "@headlessui/react"
+import { Dispatch, SetStateAction } from "react"
+import { classNames } from "../helpers"
+import { sorts, sortType } from "../types"
+type props = {
+	setSort: Dispatch<SetStateAction<sortType>>
+	sort: sortType
+}
+const SortDropdown = ({ sort, setSort }: props) => {
 	return (
 		<>
 			{sorts.map((method, i) => {
@@ -24,3 +32,4 @@ const SortDroprown = () => {
 		</>
 	)
 }
+export default SortDropdown

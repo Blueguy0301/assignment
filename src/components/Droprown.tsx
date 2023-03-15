@@ -4,13 +4,17 @@ type props = {
 	buttonName: string
 	options?: string[]
 	children?: ReactNode
+	disabled?: boolean
 }
 
 export const Dropdown = (props: props) => {
 	return (
 		<Menu as="div" className="relative inline-block text-left">
 			<div>
-				<Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+				<Menu.Button
+					className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 disabled:opacity-50"
+					disabled={props?.disabled}
+				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
