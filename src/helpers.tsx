@@ -17,7 +17,6 @@ export const sortAsc = (data: countries, order: "asc" | "desc") => {
 			? data.sort((a, b) => a.name.localeCompare(b.name))
 			: data.sort((a, b) => -a.name.localeCompare(b.name, undefined, { numeric: true }))
 	localStorage.setItem(`sortCountry ${order}`, JSON.stringify(res))
-	console.log("currentCountry's size ", res.length)
 	return res
 }
 
@@ -29,7 +28,6 @@ export const sortArea = (data: countries, order: "asc" | "desc") => {
 			? data.sort((a, b) => b.area - a.area)
 			: data.sort((a, b) => a.area - b.area)
 	localStorage.setItem(`sortArea ${order}`, JSON.stringify(res))
-	console.log("currentCountry's size ", res.length)
 
 	return res
 }
@@ -54,13 +52,11 @@ export const classNames: (...classes: string[]) => string = (...classes) => {
 export const filterCountries = (data: countries, filterOptions: regions) => {
 	const cache = localStorage.getItem(filterOptions)
 	if (cache) return JSON.parse(cache) as countries
-	// console.log(data)
 	if (filterOptions === "none") return data
 	if (filterOptions === "Lithuania")
 		return data.filter((a) => a.area < 65300).sort((a, b) => a.area - b.area)
 	const filteredData = data.filter((a) => a.region === filterOptions)
 	localStorage.setItem(filterOptions, JSON.stringify(filteredData))
-	console.log("currentCountry's size ", filteredData.length)
 
 	return filteredData
 }

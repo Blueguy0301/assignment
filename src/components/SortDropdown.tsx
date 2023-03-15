@@ -10,7 +10,6 @@ const SortDropdown = ({ sort, setSort }: props) => {
 	return (
 		<>
 			{sorts.map((method, i) => {
-				console.log("object")
 				return (
 					<Menu.Item key={method}>
 						{({ active }) => (
