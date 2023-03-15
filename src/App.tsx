@@ -27,6 +27,7 @@ function App() {
 		setCountries(await getCountries())
 		setLoading(false)
 	}
+
 	const SortDroprown = () => {
 		return (
 			<>
@@ -82,9 +83,11 @@ function App() {
 		)
 	}
 	const shownCountries = useMemo(() => {
-		console.log("ran")
-		if (search !== "") return countries //temp
-		// countries is already sorted this way xD
+		if (search !== "")
+			return countries.filter((a) => {
+				const words = a.name.toLowerCase().split(" ")
+				return words.some((word) => word.startsWith(search.toLowerCase()))
+			}) //word search
 		if (sort === "Country (Asc.)") return sortAsc(countries)
 		if (sort === "Country (Desc.)") return sortDesc(countries) // temporary
 		if (sort === "Area (Asc.)") return countries // temporary
@@ -92,7 +95,7 @@ function App() {
 		if (sort === "Continent (Asc.)") return sortContinentAsc(countries) // temporary
 		if (sort === "Continent (Desc.)") return sortContinentDesc(countries) // temporary
 		else return countries
-	}, [countries, sort])
+	}, [countries, sort, search])
 
 	return (
 		<div className="App min-h-screen scroll-smooth">
@@ -140,6 +143,8 @@ function App() {
 						id="search"
 						className="rounded-md border border-black p-2"
 						placeholder="Search"
+						onChange={(e) => setSearch(e.target.value)}
+						value={search}
 					/>
 				</div>
 			</div>
