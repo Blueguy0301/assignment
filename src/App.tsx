@@ -2,7 +2,14 @@ import { useEffect, useMemo, useState, useCallback, memo } from "react"
 import Card from "./components/Card"
 import { Dropdown } from "./components/Droprown"
 import NavBar from "./components/NavBar"
-import { classNames, getCountries } from "./helpers"
+import {
+	classNames,
+	getCountries,
+	sortAsc,
+	sortContinentAsc,
+	sortContinentDesc,
+	sortDesc,
+} from "./helpers"
 import type { countries, sortType } from "./types"
 import { regions, sorts } from "./types"
 import { Menu } from "@headlessui/react"
@@ -77,12 +84,13 @@ function App() {
 	const shownCountries = useMemo(() => {
 		console.log("ran")
 		if (search !== "") return countries //temp
-		if (sort === "Country (Asc.)") return countries // temporary
-		if (sort === "Country (Desc.)") return countries // temporary
+		// countries is already sorted this way xD
+		if (sort === "Country (Asc.)") return sortAsc(countries)
+		if (sort === "Country (Desc.)") return sortDesc(countries) // temporary
 		if (sort === "Area (Asc.)") return countries // temporary
 		if (sort === "Area (Desc.)") return countries // temporary
-		if (sort === "Continent (Asc.)") return countries // temporary
-		if (sort === "Continent (Desc.)") return countries // temporary
+		if (sort === "Continent (Asc.)") return sortContinentAsc(countries) // temporary
+		if (sort === "Continent (Desc.)") return sortContinentDesc(countries) // temporary
 		else return countries
 	}, [countries, sort])
 
