@@ -3,8 +3,8 @@ import { Dispatch, SetStateAction } from "react"
 import { classNames } from "../helpers"
 import { sorts, sortType } from "../types"
 type props = {
-	setSort: Dispatch<SetStateAction<sortType>>
-	sort: sortType
+	setSort: Dispatch<SetStateAction<sortType | undefined>>
+	sort?: sortType
 }
 const SortDropdown = ({ sort, setSort }: props) => {
 	return (

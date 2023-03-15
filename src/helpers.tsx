@@ -17,6 +17,7 @@ export const sortAsc = (data: countries, order: "asc" | "desc") => {
 			? data.sort((a, b) => a.name.localeCompare(b.name))
 			: data.sort((a, b) => -a.name.localeCompare(b.name, undefined, { numeric: true }))
 	localStorage.setItem(`sortCountry ${order}`, JSON.stringify(res))
+	console.log("currentCountry's size ", res.length)
 	return res
 }
 
@@ -28,6 +29,8 @@ export const sortArea = (data: countries, order: "asc" | "desc") => {
 			? data.sort((a, b) => b.area - a.area)
 			: data.sort((a, b) => a.area - b.area)
 	localStorage.setItem(`sortArea ${order}`, JSON.stringify(res))
+	console.log("currentCountry's size ", res.length)
+
 	return res
 }
 export const sortContinent = (data: countries, order: "asc" | "desc") => {
@@ -42,6 +45,7 @@ export const sortContinent = (data: countries, order: "asc" | "desc") => {
 					else return 0
 			  })
 	localStorage.setItem(`sortContinent ${order}`, JSON.stringify(res))
+
 	return res
 }
 export const classNames: (...classes: string[]) => string = (...classes) => {
@@ -56,6 +60,8 @@ export const filterCountries = (data: countries, filterOptions: regions) => {
 		return data.filter((a) => a.area < 65300).sort((a, b) => a.area - b.area)
 	const filteredData = data.filter((a) => a.region === filterOptions)
 	localStorage.setItem(filterOptions, JSON.stringify(filteredData))
+	console.log("currentCountry's size ", filteredData.length)
+
 	return filteredData
 }
 export const wordsearch = (data: countries, search: string) => {

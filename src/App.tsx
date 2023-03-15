@@ -36,7 +36,7 @@ function App() {
 	}
 
 	const shownCountries = useMemo(() => {
-		console.log("show ran")
+		setPage(1)
 		if (search !== "") return wordsearch(countries, search)
 		if (filter !== "none") return filterCountries(countries, filter)
 		if (sort?.includes("Country"))
@@ -48,6 +48,7 @@ function App() {
 		return countries
 	}, [countries, sort, search, filter])
 	const currentPage = shownCountries.slice(firstCountry, firstPageIndex)
+	console.log("current page size", currentPage.length)
 	return (
 		<div className="App min-h-screen scroll-smooth">
 			<NavBar />

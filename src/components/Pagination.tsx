@@ -10,7 +10,7 @@ const Pagination = ({ setPage, totalCountries, page }: props) => {
 		<div className="flex flex-row flex-wrap items-center justify-center gap-4">
 			<button
 				type="button"
-				className="rounded-md bg-yellow-30  px-3 py-2 disabled:opacity-50"
+				className="rounded-md bg-red-30 px-3  py-2 text-white disabled:opacity-50"
 				onClick={() =>
 					setPage((prev) => {
 						if (prev > 1) {
@@ -28,7 +28,7 @@ const Pagination = ({ setPage, totalCountries, page }: props) => {
 			</button>
 			<button
 				type="button"
-				className="rounded-md bg-yellow-30  px-3 py-2 disabled:opacity-50"
+				className="rounded-md bg-red-30 px-3  py-2 text-white disabled:opacity-50"
 				onClick={() => {
 					setPage((prev) => {
 						if (Math.ceil(totalCountries / countriesPerPage) === prev) return prev
