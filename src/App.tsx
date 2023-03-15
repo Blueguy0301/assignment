@@ -65,10 +65,10 @@ function App() {
 				</div>
 			)}
 			<div className="flex w-full flex-row flex-wrap items-center justify-center gap-3 p-2">
-				<Dropdown buttonName="Sort By" disabled={filter !== "none"}>
+				<Dropdown buttonName="Sort By" disabled={filter !== "none" || search !== ""}>
 					<SortDropdown sort={sort} setSort={setSort} />
 				</Dropdown>
-				<Dropdown buttonName="Filter">
+				<Dropdown buttonName="Filter" disabled={search !== ""}>
 					<Menu.Item>
 						{({ active }) => (
 							<button
